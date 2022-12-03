@@ -12,6 +12,7 @@ class MyHTMLParser(HTMLParser):
         self.inside_slot: bool = False
         self.inside_a: bool = False
         self.last_attr: list
+        self.availabilities: list = []
         super().__init__()
 
     def InsideCalendar(self) -> bool:
@@ -52,19 +53,19 @@ class MyHTMLParser(HTMLParser):
                 self.court = re.search('(?<=\\r\\n  )[A-Z].*(?=\\r\\n)', data).group()
             elif self.inside_slot and self.inside_a:
                 if re.search('Available', data) is not None:
+
                     if re.search('\\r\\n', data) is not None:
-                        availabilities.append([self.court, re.search('(?<=\\r\\n   )[A-Z].*(?=\\r\\n)', data).group()])
+                        self.availabilities.append([self.court, re.search('(?<=\\r\\n   )[A-Z].*(?=\\r\\n)', data).group()])
                     else:
-                        availabilities.append([self.court, data])
+                        self.availabilities.append([self.court, data])
             
 
 
 
         return super().handle_data(data)
 
-availabilities: list = [""]
 
-URL = "https://book.stadeiga.com/courtbooking/home/calendarDayView.do?id=29&iYear=2022&iMonth=11&iDate=4"
+URL = "https://book.stadeiga.com/courtbooking/home/calendarDayView.do?id=29&iYear=2022&iMonth=11&iDate=6"
 page = requests.get(URL)
 
 parser = MyHTMLParser()
