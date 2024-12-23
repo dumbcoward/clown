@@ -43,7 +43,9 @@ for i in range(look_ahead_days):
 
 parser.flag_two_hour_courts
 
-if len(parser.availabilities) == 0:
+two_hour_availabilities = [a for a in parser.availabilities if a.two_hour]
+
+if len(two_hour_availabilities) == 0:
     print("No availabilities found.")
     exit()
 
