@@ -4,8 +4,6 @@ from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
 import time
 
-# Review config file before running
-
 class TennisCourtChecker(HTMLParser):
     """
     Uses the HTMLParser to scrape a website for tennis court availabilities.
@@ -90,12 +88,11 @@ class TennisCourtChecker(HTMLParser):
         if self.inside_calendar or self.inside_court or self.inside_slot:
             return super().handle_data(data)
     
-    def flag_two_hour_courts():
+    def flag_two_hour_courts(self):
         # Filter out time slots that aren't part of a consecutive two hour block
-        for a in super().availabilities:
+        for a in self.availabilities:
             a.two_hour = False
-            for b in super().availabilities:
-
+            for b in self.availabilities:
                 if a.time + 1 == b.time and a.date == b.date or a.time - 1 == b.time and a.date == b.date:
                     a.two_hour = True
                     break

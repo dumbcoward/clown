@@ -7,9 +7,9 @@ from zoneinfo import ZoneInfo
 import webbrowser
 import time
 
-tz = ZoneInfo('America/New_York')
+# Review config file before running
 
-curr_hour = datetime.now(tz).hour
+tz = ZoneInfo('America/New_York')
 
 look_ahead_days = 4 if access_montreal else 3
 
@@ -26,31 +26,36 @@ for i in range(look_ahead_days):
     url = "https://book.stadeiga.com/courtbooking/home/calendarDayView.do?id=29&iYear={}&iMonth={}&iDate={}".format(yr, mth - 1, day)
 
     # The latest bookable day only opens up at 8:30 PM
-    if i == 3 + 1 if access_montreal else 0:
+    if i == 2 + (1 if access_montreal else 0):
         # Access Montreal grants access to book 4 days in advance insted of 3
-        in_booking_hours = datetime.now(tz).hour < 20 and datetime.now(tz).minute < 30
+        in_booking_hours = datetime.now(tz).hour > 20 or (datetime.now(tz).hour == 20 and datetime.now(tz).minute >= 30)
     else:
         in_booking_hours = True
 
-    # Loads page contents to a variable
-    page = requests.get(url)
+    if in_booking_hours:
+        # Loads page contents to a variable
+        page = requests.get(url)
 
-    parser.date = date.today() + timedelta(days=i)
+        parser.date = date.today() + timedelta(days=i)
 
-    # Within the feed method, each tag in the html code is treated individually in this order: handle_starttag, handle_data, handle_endtag
-    # handle_data will recursively apply the same logic for inner tags
-    parser.feed(page.text)
+        # Within the feed method, each tag in the html code is treated individually in this order: handle_starttag, handle_data, handle_endtag
+        # handle_data will recursively apply the same logic for inner tags
+        parser.feed(page.text)
 
-parser.flag_two_hour_courts
+parser.flag_two_hour_courts()
+
+if len(parser.availabilities) == 0:
+    print("No availabilities found.")
+    exit()
 
 two_hour_availabilities = [a for a in parser.availabilities if a.two_hour]
 
 if len(two_hour_availabilities) == 0:
-    print("No availabilities found.")
+    print("Only one hour slots are available")
     exit()
 
 html_body = ''
-for a in parser.availabilities:
+for a in two_hour_availabilities:
     a: TennisCourtChecker.Availability
     court_info = ('%s, %s, %s, %s' % (a.date, a.time, a.court, a.link))
     
