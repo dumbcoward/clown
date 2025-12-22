@@ -75,7 +75,7 @@ export function createHumanBody() {
 }
 
 export async function createJohn() {
-    const john = await loadGLB('./john.glb', { scale: 1.5, center: true, castShadow: true });
+    const john = await loadGLB('john.glb', { scale: 1.5, center: true, castShadow: true });
     john.rotation.x = 0.5;
 
     return john;
