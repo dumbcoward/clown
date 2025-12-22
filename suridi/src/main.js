@@ -74,7 +74,7 @@ scene.add(light);
 
 
 camera.position.z = 3;
-//zamn
+
 const mouse = new THREE.Vector2();
 
 window.addEventListener('mousemove', (event) => {
