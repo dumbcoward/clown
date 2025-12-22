@@ -11,10 +11,12 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
+        working-directory: cube
       - run: npm run build
+        working-directory: cube
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ./cube/dist
           publish_branch: gh-pages
