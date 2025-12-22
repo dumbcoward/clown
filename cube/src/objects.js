@@ -5,7 +5,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 // If you add `john.glb` to `src/assets/john.glb`, Vite will bundle it and
 // provide a correct URL for production. Import it with `?url` so we get a
 // runtime URL that respects the configured `base`.
-import johnUrl from './assets/john.glb?url';
+import johnUrl from './assets/vic.glb?url';
 
 export function createCube() {
     const geometry = new THREE.BoxGeometry();
@@ -28,7 +28,7 @@ export function createCube() {
     const group = new THREE.Group();
     group.add(outline);
     group.add(cube);
-    group.rotation.x = 0.5;
+    group.rotation.x = -1;
 
     return group;
 }
