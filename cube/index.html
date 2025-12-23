@@ -11,7 +11,22 @@
 </head>
 <body>
   <div id="app"></div>
-  <div id="zone"></div>
+
+  <!-- rotation readout -->
+  <div id="rotation-readout" style="
+      position: fixed;
+      top: 8px;
+      left: 8px;
+      padding: 6px 10px;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      font-family: monospace;
+      font-size: 13px;
+      border-radius: 4px;
+      z-index: 9999;
+    ">rot: —
+  </div>
+
   <link rel="stylesheet" href="./src/style.css">
   <script type="module" src="./src/main.js"></script>
 </body>

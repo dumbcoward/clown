@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { CUBE_COLOR } from './constants.js';
+import { CUBE_COLOR } from './params.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 // If you add `john.glb` to `src/assets/john.glb`, Vite will bundle it and
@@ -83,6 +83,7 @@ export async function createJohn() {
     // Use the Vite-resolved URL so production builds load the correct path
     const john = await loadGLB(johnUrl, { scale: 1.5, center: true, castShadow: true });
     john.rotation.x = 0.5;
+    john.rotation.y = 6;
 
     return john;
 }

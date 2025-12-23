@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { INTERNAL_WIDTH, INTERNAL_HEIGHT } from './constants.js';
+import { INTERNAL_WIDTH, INTERNAL_HEIGHT } from './params.js';
 
 export function createRenderer() {
     const renderer = new THREE.WebGLRenderer({ alpha: true });

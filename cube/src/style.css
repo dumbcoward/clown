@@ -11,9 +11,14 @@ canvas {
     transform: translate(-50%, -50%);
     image-rendering: pixelated;
     image-rendering: crisp-edges;
-    border: 5px solid rgb(252, 136, 41);
+    border: 5px solid rgba(0, 0, 0, 0.37);
 }
 
+
 body {
-    background: rgb(204, 196, 124);
+    background-image: url('./assets/roma_ragazza.png');
+    background-size: 250vw auto;   /* width follows viewport, height auto -> keeps aspect */
+    background-position: -100vw var(--bg-y, 0px); /* X Y from top-left */
+    background-repeat: no-repeat;
+    background-attachment: scroll; /* background moves with scroll */
 }

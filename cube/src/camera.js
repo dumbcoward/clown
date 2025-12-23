@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { INTERNAL_WIDTH, INTERNAL_HEIGHT, ZOOM } from './constants.js';
+import { INTERNAL_WIDTH, INTERNAL_HEIGHT, ZOOM } from './params.js';
 
 export function createCamera() {
     const aspect = INTERNAL_WIDTH / INTERNAL_HEIGHT;
