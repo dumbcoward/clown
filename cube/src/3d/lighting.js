@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { LIGHT_COLOR, LIGHT_INTENSITY, LIGHT_POSITION } from './params.js';
+import { LIGHT_COLOR, LIGHT_INTENSITY, LIGHT_POSITION } from '../params.js';
 
 export function createLight() {
     const light = new THREE.DirectionalLight(LIGHT_COLOR, LIGHT_INTENSITY);

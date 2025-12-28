@@ -3,15 +3,12 @@ const res_snes = { width: 256, height: 224 };
 const res_ps1 = { width: 320, height: 240 };
 const res_hd = { width: 1920, height: 1080 };
 const res_square = { width: 300, height: 300 };
-const rez = {
+export const rez = {
     snes: res_snes,
     ps1: res_ps1,
     hd: res_hd,
     square: res_square,
 };
-const selectedRez = rez.snes;
-export const INTERNAL_WIDTH = selectedRez.width;
-export const INTERNAL_HEIGHT = selectedRez.height;
 
 // camera
 export const ZOOM = 0.25;

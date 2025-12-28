@@ -1,4 +1,4 @@
-import { ROTATION_SPEED } from './params.js';
+import { ROTATION_SPEED } from '../params.js';
 
 export function animate(object, camera, renderer, scene) {
     requestAnimationFrame(() => animate(object, camera, renderer, scene));
@@ -15,8 +15,6 @@ export function animate(object, camera, renderer, scene) {
 export function startAnimation(object, camera, renderer, scene) {
     animate(object, camera, renderer, scene);
 }
-
-
 
 function formatRotation(obj) {
     const rx = obj.rotation.x.toFixed(1);

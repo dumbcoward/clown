@@ -1,11 +1,11 @@
 import * as THREE from 'three';
-import { INTERNAL_WIDTH, INTERNAL_HEIGHT } from './params.js';
+import { rez } from '../params.js';
 
 export function scaleCanvasToWindow(renderer) {
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
     
-    const internalAspect = INTERNAL_WIDTH / INTERNAL_HEIGHT;
+    const internalAspect = rez.snes.width / rez.snes.height;
     const windowAspect = windowWidth / windowHeight;
     
     let displayWidth, displayHeight;

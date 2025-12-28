@@ -16,9 +16,5 @@ canvas {
 
 
 body {
-    background-image: url('./assets/roma_ragazza.png');
-    background-size: 250vw auto;   /* width follows viewport, height auto -> keeps aspect */
-    background-position: -100vw var(--bg-y, 0px); /* X Y from top-left */
-    background-repeat: no-repeat;
-    background-attachment: scroll; /* background moves with scroll */
+    background-color: #DAA520;
 }
