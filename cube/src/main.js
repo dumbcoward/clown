@@ -30,6 +30,19 @@ function clamp(val, min, max) {
         updateZoom(camera, zoom);
     });
 
+    const scaleSlider = document.getElementById('zoom-slider');
+    const scaleValue = document.getElementById('scale-value');
+
+    scaleSlider.addEventListener('input', function() {
+      scaleValue.textContent = 'Scale: ' + scaleSlider.value;
+    });
+
+    const colorPicker = document.getElementById('color-picker');
+    colorPicker.addEventListener('input', function() {
+    // Add functionality to use the selected color
+    console.log('Selected color:', colorPicker.value);
+    });
+
     startAnimation(object, camera, renderer, scene);
 
 

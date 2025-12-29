@@ -12,36 +12,11 @@
 <body>
   <div id="app"></div>
 
-  <div id="ui-panel" style="
-    position: fixed;
-    bottom: 8px;
-    left: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    z-index: 9999;
-  ">
+  <div id="ui-panel">
     <!-- rotation readout -->
-    <div id="rotation-readout" style="
-        padding: 6px 10px;
-        background: rgba(0,0,0,0.6);
-        color: #fff;
-        font-family: monospace;
-        font-size: 13px;
-        border-radius: 4px;
-      ">rot: —
-    </div>
+    <div id="rotation-readout">rot: —</div>
 
-    <select id="internal-resolution" style="
-      padding: 6px 10px;
-      background: rgba(0,0,0,0.6);
-      color: #fff;
-      font-family: monospace;
-      font-size: 13px;
-      border-radius: 4px;
-      border: none;
-      cursor: pointer;
-      ">
+    <select id="internal-resolution">
       <option value="snes">SNES</option>
       <option value="ps1">PS1</option>
       <option value="hd">HD</option>
@@ -54,45 +29,14 @@
         min="0.2"
         max="1"
         step="0.01"
-        value="0.2"
+        value="1"
         style="width: 200px; cursor: pointer;"
       />
-      <span id="scale-value" style="
-          padding: 6px 10px;
-          background: rgba(0,0,0,0.6);
-          color: #fff;
-          font-family: monospace;
-          font-size: 13px;
-          border-radius: 4px;
-        ">Scale: 1
-      </span>
+      <span id="scale-value">Scale: 1</span>
     </div>
 
-    <input type="color" id="color-picker" style="
-      padding: 6px;
-      z-index: 9999;
-      cursor: pointer;
-    " />
-    <script>
-      const colorPicker = document.getElementById('color-picker');
-      colorPicker.addEventListener('input', function() {
-        // Add functionality to use the selected color
-        console.log('Selected color:', colorPicker.value);
-      });
-    </script>
+    <input type="color" id="color-picker"/>
   </div>
-
-  <script>
-    const scaleSlider = document.getElementById('zoom-slider');
-    const scaleValue = document.getElementById('scale-value');
-
-    scaleSlider.addEventListener('input', function() {
-      scaleValue.textContent = 'Scale: ' + scaleSlider.value;
-    });
-  </script>
-
-
-
 
   <link rel="stylesheet" href="./src/style.css">
   <script type="module" src="./src/main.js"></script>
