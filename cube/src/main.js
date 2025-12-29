@@ -31,10 +31,10 @@ function clamp(val, min, max) {
     });
 
     const scaleSlider = document.getElementById('zoom-slider');
-    const scaleValue = document.getElementById('scale-value');
+    const scaleValue = document.getElementById('zoom-value');
 
     scaleSlider.addEventListener('input', function() {
-      scaleValue.textContent = 'Scale: ' + scaleSlider.value;
+    scaleValue.textContent = 'Scale: ' + (Math.round(scaleSlider.value * 10) / 10).toFixed(1);
     });
 
     const colorPicker = document.getElementById('color-picker');
@@ -44,7 +44,6 @@ function clamp(val, min, max) {
     });
 
     startAnimation(object, camera, renderer, scene);
-
 
 })();
 

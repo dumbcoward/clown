@@ -1,3 +1,11 @@
+:root {
+    --color-bg-primary: rgba(218, 165, 32, 1);
+    --color-bg-dark: rgba(0, 0, 0, 0.2);
+    --color-text: #fff;
+    --color-border: rgba(0, 0, 0, 0.2);
+    --color-dropdown-bg: rgba(218, 165, 32, 1);
+}
+
 html, body {
     margin: 0;
     padding: 0;
@@ -11,19 +19,23 @@ canvas {
     transform: translate(-50%, -50%);
     image-rendering: pixelated;
     image-rendering: crisp-edges;
-    border: 5px solid rgba(0, 0, 0, 0.37);
+    border: 5px solid var(--color-border);
 }
 
 
 body {
-    background-color: #DAA520;
-    color: #fff;
+    background-color: var(--color-bg-primary);
+    color: var(--color-text);
     font-family: monospace;
     font-size: 13px;
 }
 
+select option {
+    background: var(--color-dropdown-bg);
+}
+
 *:focus {
-    outline: 2px solid rgba(0, 0, 0, 0.37);
+    outline: 2px solid var(--color-border);
     outline-offset: 2px;
 }
 
@@ -39,20 +51,18 @@ body {
 
 #internal-resolution {
     border: none;
-    padding-right: 30px;
-    background-position: right 8px center;
-    background-repeat: no-repeat;
     appearance: none;
     cursor: pointer;
+    
 }
 
 #rotation-readout,
 #internal-resolution,
-#scale-value,
+#zoom-value,
 #color-picker {
     padding: 6px 10px;
-    background: rgba(0,0,0,0.2);
-    color: #fff;
+    background: var(--color-bg-dark);
+    color: var(--color-text);
     font-family: monospace;
     font-size: 13px;
     border-radius: 3px;
@@ -61,5 +71,11 @@ body {
 #color-picker {
     border: none;
     cursor: pointer;
+    width: 50%;
     z-index: 9999;
+}
+
+#zoom-slider {
+    width: 50%;
+    cursor: pointer;
 }
