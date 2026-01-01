@@ -11,3 +11,11 @@ export function createLight() {
     
     return light;
 }
+
+export function updateLightColor(light, color) {
+    light.color = new THREE.Color(color);
+}
+
+export function updateLightIntensity(light, intensity) {
+    light.intensity = intensity;
+}

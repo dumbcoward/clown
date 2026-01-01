@@ -2,6 +2,7 @@ import { createScene } from './3d/scene.js';
 import { scaleCanvasToWindow } from './3d/utilities.js';
 import { startAnimation } from './3d/animation.js';
 import { updateZoom } from './3d/camera.js';
+import { updateLightColor, updateLightIntensity } from './3d/lighting.js';
 
 function clamp(val, min, max) {
     return Math.min(Math.max(val, min), max);
@@ -37,10 +38,20 @@ function clamp(val, min, max) {
     scaleValue.textContent = 'Scale: ' + (Math.round(scaleSlider.value * 10) / 10).toFixed(1);
     });
 
+    const lightSlider = document.getElementById('light-slider');
+    const lightValue = document.getElementById('light-value');
+
+    lightSlider.addEventListener('input', function() {
+    lightValue.textContent = 'Intensity: ' + (Math.round(lightSlider.value * 100) / 100).toFixed(2);
+    updateLightIntensity(light, parseFloat(lightSlider.value));
+    });
+
     const colorPicker = document.getElementById('color-picker');
     colorPicker.addEventListener('input', function() {
-    // Add functionality to use the selected color
-    console.log('Selected color:', colorPicker.value);
+        // Add functionality to use the selected color
+        console.log('Selected color:', colorPicker.value);
+        updateLightColor(light, colorPicker.value);
+        document.documentElement.style.setProperty('--color-art', colorPicker.value);
     });
 
     startAnimation(object, camera, renderer, scene);

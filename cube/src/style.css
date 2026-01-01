@@ -1,9 +1,10 @@
 :root {
     --color-bg-primary: rgba(218, 165, 32, 1);
-    --color-bg-dark: rgba(0, 0, 0, 0.2);
+    --color-bg-dark: rgba(0, 0, 0, 0.5);
     --color-text: #fff;
     --color-border: rgba(0, 0, 0, 0.2);
     --color-dropdown-bg: rgba(218, 165, 32, 1);
+    --color-art: #ffffff;
 }
 
 html, body {
@@ -19,12 +20,15 @@ canvas {
     transform: translate(-50%, -50%);
     image-rendering: pixelated;
     image-rendering: crisp-edges;
-    border: 5px solid var(--color-border);
+    z-index: 1;
+    /*border: 5px solid var(--color-border);*/
 }
-
 
 body {
     background-color: var(--color-bg-primary);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
     color: var(--color-text);
     font-family: monospace;
     font-size: 13px;
@@ -78,4 +82,15 @@ select option {
 #zoom-slider {
     width: 50%;
     cursor: pointer;
+}
+
+.goof-icon {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--color-art); /* set your desired color */
+    -webkit-mask: url('./assets/goof.svg') center/contain no-repeat;
+            mask: url('./assets/goof.svg') center/contain no-repeat;
+    z-index: 0; /* raise to 2 if you need it above the canvas */
 }
