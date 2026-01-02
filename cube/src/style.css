@@ -5,6 +5,12 @@
     --color-border: rgba(0, 0, 0, 0.2);
     --color-dropdown-bg: rgba(218, 165, 32, 1);
     --color-art: #ffffff;
+    --ui-content-padding: 5px;
+
+    /* Bevel variables */
+    --bevel-bg: #c9c9c9;
+    --bevel-shadow: inset -1px -1px 0 #ffffff, inset 1px 1px 0 #7a7a7a;
+    --bevel-radius: 4px;
 }
 
 /* Base Styles */
@@ -57,6 +63,8 @@ canvas {
     max-width: 400px;
     overflow: hidden;
     transition: max-width 0.3s ease;
+    padding-left: var(--ui-content-padding);
+    padding-right: var(--ui-content-padding);
 }
 
 #ui-content.collapsed {
@@ -68,15 +76,21 @@ canvas {
 #rotation-readout,
 #internal-resolution,
 #object-model,
-#zoom-value,
-#light-value,
-#color-picker {
+#color-picker,
+#info,
+#zoom,
+#light {
     padding: 6px 10px;
     background: var(--color-bg-dark);
     color: var(--color-text);
     font-family: monospace;
     font-size: 13px;
     border-radius: 16px;
+}
+
+#zoom,
+#light {
+    gap: 5px;
 }
 
 #ui-toggle {
@@ -99,6 +113,8 @@ input[type="range"] {
     width: 50%;
     cursor: pointer;
     accent-color: rgb(255, 255, 255);
+    padding-left: 1px;
+    padding-right: 1px;
 }
 
 #color-picker {
@@ -122,4 +138,24 @@ select option {
     -webkit-mask: url('./assets/goof.svg') center/contain no-repeat;
     mask: url('./assets/goof.svg') center/contain no-repeat;
     z-index: 0;
+}
+
+/* Bevel style */
+.bevel {
+    background: var(--bevel-bg);
+    box-shadow: var(--bevel-shadow);
+    border-radius: var(--bevel-radius);
+    padding: 6px 10px;
+    font-family: monospace;
+    font-size: 13px;
+}
+
+/* Apply bevel to all children of bevel-container */
+.bevel-container > * {
+    background: var(--bevel-bg);
+    box-shadow: var(--bevel-shadow);
+    border-radius: var(--bevel-radius);
+    padding: 6px 10px;
+    font-family: monospace;
+    font-size: 13px;
 }

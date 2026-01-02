@@ -1,9 +1,10 @@
 import { createScene, updateObject } from './3d/scene.js';
 import { scaleCanvasToWindow } from './3d/utilities.js';
 import { startAnimation } from './3d/animation.js';
-import { updateZoom } from './3d/camera.js';
+import { updateZoom, updateCameraForAspect } from './3d/camera.js';
 import { updateLightColor, updateLightIntensity } from './3d/lighting.js';
 import { invertColor } from './3d/utilities.js';
+import { setLowResViewport } from './3d/renderer.js';
 
 function clamp(val, min, max) {
     return Math.min(Math.max(val, min), max);
@@ -12,13 +13,14 @@ function clamp(val, min, max) {
 (async () => {
     const { scene, camera, renderer, light } = await createScene();
 
-    scaleCanvasToWindow(renderer);
-    window.addEventListener('resize', () => scaleCanvasToWindow(renderer));
-    
-    const dropdownResolution = document.getElementById('internal-resolution');
-    dropdownResolution.addEventListener('change', (event) => {
-        console.log('Dropdown changed:', event.target.value);
-    });
+    const applyViewport = () => {
+        const { aspect } = setLowResViewport(renderer);
+        updateCameraForAspect(camera, aspect);
+        scaleCanvasToWindow(renderer);
+    };
+
+    applyViewport();
+    window.addEventListener('resize', applyViewport);
 
     const dropdownModel = document.getElementById('object-model');
     dropdownModel.addEventListener('change', async (event) => {
@@ -27,6 +29,22 @@ function clamp(val, min, max) {
 
         const existingObject = scene.children.find(child => child.isMesh || child.isGroup);
         console.log('New object in scene:', typeof existingObject);
+
+        // Output the texture size of the loaded object
+        if (existingObject && existingObject.material && existingObject.material.map && existingObject.material.map.image) {
+            const img = existingObject.material.map.image;
+            console.log('Texture size:', img.width, 'x', img.height);
+        } else if (existingObject && existingObject.children) {
+            // If it's a group, check children for textures
+            existingObject.traverse(child => {
+            if (child.isMesh && child.material && child.material.map && child.material.map.image) {
+                const img = child.material.map.image;
+                console.log('Texture size:', img.width, 'x', img.height);
+            }
+            });
+        } else {
+            console.log('No texture found on the loaded object.');
+        }
     });
 
     const zoomSlider = document.getElementById('zoom-slider');
@@ -64,9 +82,17 @@ function clamp(val, min, max) {
     const uiContent = document.getElementById('ui-content');
 
     uiToggle.addEventListener('click', () => {
-    uiContent.classList.toggle('collapsed');
-    uiToggle.textContent = uiContent.classList.contains('collapsed') ? '|||' : '|||';
+        uiContent.classList.toggle('collapsed');
+        uiToggle.textContent = uiContent.classList.contains('collapsed') ? '|||' : '|||';
+        if (uiContent.classList.contains('collapsed')) {
+            document.documentElement.style.setProperty('--ui-content-padding', '0px');
+        } else {
+            document.documentElement.style.setProperty('--ui-content-padding', '5px');
+        }
     });
+
+    const gl = document.createElement('canvas').getContext('webgl');
+    console.log('maxTextureSize', gl.getParameter(gl.MAX_TEXTURE_SIZE));
 
     startAnimation(camera, renderer, scene);
 
