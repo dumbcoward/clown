@@ -50,8 +50,8 @@ function clamp(val, min, max) {
     const colorPicker = document.getElementById('color-picker');
     colorPicker.addEventListener('input', function() {
         updateLightColor(light, colorPicker.value);
-        document.documentElement.style.setProperty('--color-art', colorPicker.value);
         const invertedColor = invertColor(colorPicker.value);
+        document.documentElement.style.setProperty('--color-art', colorPicker.value);
         document.documentElement.style.setProperty('--color-bg-primary', invertedColor);
     });
 
@@ -60,7 +60,7 @@ function clamp(val, min, max) {
 
     uiToggle.addEventListener('click', () => {
     uiContent.classList.toggle('collapsed');
-    uiToggle.textContent = uiContent.classList.contains('collapsed') ? '▶' : '▼';
+    uiToggle.textContent = uiContent.classList.contains('collapsed') ? '|||' : '|||';
     });
 
     startAnimation(object, camera, renderer, scene);

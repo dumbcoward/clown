@@ -13,7 +13,7 @@
   <div id="app"></div>
 
   <div id="ui-panel">
-    <button id="ui-toggle">▼</button>
+    <button id="ui-toggle">|||</button>
     <div id="ui-content">
       <div id="rotation-readout">rot: —</div>
       <!-- rotation readout -->
@@ -23,7 +23,7 @@
         <option value="hd">HD</option>
       </select>
       
-      <div style="display: flex;">
+      <div id="zoom" style="display: flex;">
         <input
           type="range"
           id="zoom-slider"
@@ -35,7 +35,7 @@
         <span id="zoom-value">Scale: 1</span>
       </div>
 
-      <div style="display: flex;">
+      <div id="light" style="display: flex;">
         <input
           type="range"
           id="light-slider"
@@ -46,7 +46,6 @@
         />
         <span id="light-value">Intensity: 1</span>
       </div>
-
       <input type="color" id="color-picker"/>
     </div>
     

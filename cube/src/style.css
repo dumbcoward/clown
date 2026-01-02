@@ -44,7 +44,7 @@ canvas {
     left: 8px;
     display: flex;
     flex-direction: row;
-    gap: 5px;
+    gap: 10px;
     white-space: nowrap;
     z-index: 9999;
 }
@@ -80,7 +80,7 @@ canvas {
 #ui-toggle {
     cursor: pointer;
     border: none;
-    color: var(--color-art);
+    color: var(--color-text);
 }
 
 #internal-resolution {
@@ -95,7 +95,7 @@ canvas {
 input[type="range"] {
     width: 50%;
     cursor: pointer;
-    accent-color: rgb(0, 0, 0);
+    accent-color: rgb(255, 255, 255);
 }
 
 #color-picker {
