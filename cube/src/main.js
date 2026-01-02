@@ -1,4 +1,4 @@
-import { createScene } from './3d/scene.js';
+import { createScene, updateObject } from './3d/scene.js';
 import { scaleCanvasToWindow } from './3d/utilities.js';
 import { startAnimation } from './3d/animation.js';
 import { updateZoom } from './3d/camera.js';
@@ -9,19 +9,24 @@ function clamp(val, min, max) {
     return Math.min(Math.max(val, min), max);
 }
 
-
-
-
 (async () => {
-    const { scene, camera, renderer, object, light } = await createScene();
+    const { scene, camera, renderer, light } = await createScene();
 
     scaleCanvasToWindow(renderer);
     window.addEventListener('resize', () => scaleCanvasToWindow(renderer));
     
-    const dropdown = document.getElementById('internal-resolution');
-
-    dropdown.addEventListener('change', (event) => {
+    const dropdownResolution = document.getElementById('internal-resolution');
+    dropdownResolution.addEventListener('change', (event) => {
         console.log('Dropdown changed:', event.target.value);
+    });
+
+    const dropdownModel = document.getElementById('object-model');
+    dropdownModel.addEventListener('change', async (event) => {
+        console.log('model changed:', event.target.value);
+        await updateObject(scene, event.target.value);
+
+        const existingObject = scene.children.find(child => child.isMesh || child.isGroup);
+        console.log('New object in scene:', typeof existingObject);
     });
 
     const zoomSlider = document.getElementById('zoom-slider');
@@ -43,8 +48,8 @@ function clamp(val, min, max) {
     const lightValue = document.getElementById('light-value');
 
     lightSlider.addEventListener('input', function() {
-    lightValue.textContent = 'Intensity: ' + (Math.round(lightSlider.value * 100) / 100).toFixed(1);
-    updateLightIntensity(light, parseFloat(lightSlider.value));
+        lightValue.textContent = 'Intensity: ' + (Math.round(lightSlider.value * 100) / 100).toFixed(1);
+        updateLightIntensity(light, parseFloat(lightSlider.value));
     });
 
     const colorPicker = document.getElementById('color-picker');
@@ -63,7 +68,7 @@ function clamp(val, min, max) {
     uiToggle.textContent = uiContent.classList.contains('collapsed') ? '|||' : '|||';
     });
 
-    startAnimation(object, camera, renderer, scene);
+    startAnimation(camera, renderer, scene);
 
 })();
 

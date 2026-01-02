@@ -1,19 +1,23 @@
 import { ROTATION_SPEED } from '../params.js';
 
-export function animate(object, camera, renderer, scene) {
-    requestAnimationFrame(() => animate(object, camera, renderer, scene));
+export function animate(camera, renderer, scene) {
+    requestAnimationFrame(() => animate(camera, renderer, scene));
     
-    object.rotation.y += ROTATION_SPEED;
+    const existingObject = scene.children.find(child => child.isMesh || child.isGroup);
+    
+    if (!existingObject) return;
+    
+    existingObject.rotation.y += ROTATION_SPEED;
 
     const rotEl = document.getElementById('rotation-readout');
     if (rotEl) {
-        rotEl.textContent = formatRotation(object);
+        rotEl.textContent = formatRotation(existingObject);
     }
     renderer.render(scene, camera);
 }
 
-export function startAnimation(object, camera, renderer, scene) {
-    animate(object, camera, renderer, scene);
+export function startAnimation(camera, renderer, scene) {
+    animate(camera, renderer, scene);
 }
 
 function formatRotation(obj) {

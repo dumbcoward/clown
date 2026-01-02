@@ -29,9 +29,10 @@ html, body {
 /* Canvas */
 canvas {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     z-index: 1;
@@ -66,6 +67,7 @@ canvas {
 #ui-toggle,
 #rotation-readout,
 #internal-resolution,
+#object-model,
 #zoom-value,
 #light-value,
 #color-picker {
@@ -83,7 +85,8 @@ canvas {
     color: var(--color-text);
 }
 
-#internal-resolution {
+#internal-resolution,
+#object-model {
     border: none;
     appearance: none;
     cursor: pointer;

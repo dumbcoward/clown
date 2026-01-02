@@ -2,10 +2,7 @@ import * as THREE from 'three';
 import { CUBE_COLOR } from '../params.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-// If you add `john.glb` to `src/assets/john.glb`, Vite will bundle it and
-// provide a correct URL for production. Import it with `?url` so we get a
-// runtime URL that respects the configured `base`.
-import johnUrl from '../assets/vic.glb?url';
+
 
 export function createCube() {
     const geometry = new THREE.BoxGeometry();
@@ -114,3 +111,4 @@ export async function loadGLB(url, { scale = 1, center = true, castShadow = fals
 
     return group;
 }
+

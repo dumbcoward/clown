@@ -6,7 +6,7 @@ export function createRenderer() {
     document.getElementById('app').appendChild(renderer.domElement);
     
     // Set initial size and pixel ratio to snes resolution
-    renderer.setSize(rez.snes.width, rez.snes.height, false);
+    renderer.setSize(window.innerWidth, window.innerHeight, false);
     renderer.setPixelRatio(1);
     renderer.setClearColor(0x000000, 0);
     
