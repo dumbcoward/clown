@@ -8,15 +8,15 @@
     html,body,#app { height: 100%; margin: 0; }
     canvas { display: block; }
   </style>
-  <script type="module" crossorigin src="./assets/index-DsmaA7sJ.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-CAqF4QGj.css">
+  <script type="module" crossorigin src="./assets/index-mI8H7S7j.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CsgzrzaO.css">
 </head>
 <body>
   <div id="app"></div>
 
   <div id="ui-panel">
-    <button id="ui-toggle">|||</button>
-    <div id="ui-content">
+    <button id="ui-toggle" class="bevel">|||</button>
+    <div id="ui-content" class="bevel-container">
 
       <div id="rotation-readout">rot: —</div>
     
@@ -39,7 +39,7 @@
           type="range"
           id="zoom-slider"
           min="0.15"
-          max="1"
+          max="5"
           step="0.01"
           value="1"
         />
@@ -55,9 +55,12 @@
           step="0.01"
           value="1"
         />
-        <span id="light-value">Intensity: 1</span>
+        <span id="light-value">Intensity: 1.0</span>
       </div>
       <input type="color" id="color-picker"/>
+      <div id="info">
+        shamone
+      </div>
     </div>
     
   </div>
