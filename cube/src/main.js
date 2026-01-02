@@ -3,6 +3,7 @@ import { scaleCanvasToWindow } from './3d/utilities.js';
 import { startAnimation } from './3d/animation.js';
 import { updateZoom } from './3d/camera.js';
 import { updateLightColor, updateLightIntensity } from './3d/lighting.js';
+import { invertColor } from './3d/utilities.js';
 
 function clamp(val, min, max) {
     return Math.min(Math.max(val, min), max);
@@ -42,16 +43,24 @@ function clamp(val, min, max) {
     const lightValue = document.getElementById('light-value');
 
     lightSlider.addEventListener('input', function() {
-    lightValue.textContent = 'Intensity: ' + (Math.round(lightSlider.value * 100) / 100).toFixed(2);
+    lightValue.textContent = 'Intensity: ' + (Math.round(lightSlider.value * 100) / 100).toFixed(1);
     updateLightIntensity(light, parseFloat(lightSlider.value));
     });
 
     const colorPicker = document.getElementById('color-picker');
     colorPicker.addEventListener('input', function() {
-        // Add functionality to use the selected color
-        console.log('Selected color:', colorPicker.value);
         updateLightColor(light, colorPicker.value);
         document.documentElement.style.setProperty('--color-art', colorPicker.value);
+        const invertedColor = invertColor(colorPicker.value);
+        document.documentElement.style.setProperty('--color-bg-primary', invertedColor);
+    });
+
+    const uiToggle = document.getElementById('ui-toggle');
+    const uiContent = document.getElementById('ui-content');
+
+    uiToggle.addEventListener('click', () => {
+    uiContent.classList.toggle('collapsed');
+    uiToggle.textContent = uiContent.classList.contains('collapsed') ? '▶' : '▼';
     });
 
     startAnimation(object, camera, renderer, scene);

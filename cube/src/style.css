@@ -7,24 +7,11 @@
     --color-art: #ffffff;
 }
 
+/* Base Styles */
 html, body {
     margin: 0;
     padding: 0;
     overflow: hidden;
-}
-
-canvas {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-    z-index: 1;
-    /*border: 5px solid var(--color-border);*/
-}
-
-body {
     background-color: var(--color-bg-primary);
     background-size: cover;
     background-repeat: no-repeat;
@@ -34,63 +21,102 @@ body {
     font-size: 13px;
 }
 
-select option {
-    background: var(--color-dropdown-bg);
-}
-
 *:focus {
     outline: 2px solid var(--color-border);
     outline-offset: 2px;
 }
 
+/* Canvas */
+canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    z-index: 1;
+}
+
+/* UI Panel */
 #ui-panel {
     position: fixed;
     bottom: 8px;
     left: 8px;
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    flex-direction: row;
+    gap: 5px;
+    white-space: nowrap;
     z-index: 9999;
 }
 
-#internal-resolution {
-    border: none;
-    appearance: none;
-    cursor: pointer;
-    
+#ui-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    max-width: 400px;
+    overflow: hidden;
+    transition: max-width 0.3s ease;
 }
 
+#ui-content.collapsed {
+    max-width: 0;
+}
+
+/* UI Controls */
+#ui-toggle,
 #rotation-readout,
 #internal-resolution,
 #zoom-value,
+#light-value,
 #color-picker {
     padding: 6px 10px;
     background: var(--color-bg-dark);
     color: var(--color-text);
     font-family: monospace;
     font-size: 13px;
-    border-radius: 3px;
+    border-radius: 16px;
+}
+
+#ui-toggle {
+    cursor: pointer;
+    border: none;
+    color: var(--color-art);
+}
+
+#internal-resolution {
+    border: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+/* Sliders */
+#zoom-slider,
+#light-slider,
+input[type="range"] {
+    width: 50%;
+    cursor: pointer;
+    accent-color: rgb(0, 0, 0);
 }
 
 #color-picker {
     border: none;
     cursor: pointer;
-    width: 50%;
-    z-index: 9999;
+    width: 25%;
+    height: 3vh;
 }
 
-#zoom-slider {
-    width: 50%;
-    cursor: pointer;
+select option {
+    background: var(--color-dropdown-bg);
 }
 
-.goof-icon {
+/* Vector Art */
+.vector-art {
     position: fixed;
     inset: 0;
     width: 100vw;
     height: 100vh;
-    background-color: var(--color-art); /* set your desired color */
+    background-color: var(--color-art);
     -webkit-mask: url('./assets/goof.svg') center/contain no-repeat;
-            mask: url('./assets/goof.svg') center/contain no-repeat;
-    z-index: 0; /* raise to 2 if you need it above the canvas */
+    mask: url('./assets/goof.svg') center/contain no-repeat;
+    z-index: 0;
 }

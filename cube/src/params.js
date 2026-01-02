@@ -11,11 +11,11 @@ export const rez = {
 };
 
 // camera
-export const ZOOM = 0.25;
+export const ZOOM = 0.15;
 
 // lighting
 export const LIGHT_COLOR = 0xFFFFFF;
-export const LIGHT_INTENSITY = 1;
+export const LIGHT_INTENSITY = 5;
 export const CUBE_COLOR = 0xBAC9B4;
 export const LIGHT_POSITION = { x: 2, y: 7, z: 5 };
 
