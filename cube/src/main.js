@@ -126,7 +126,22 @@ function clamp(val, min, max) {
         }
     });
 
+    let isTouchDown = false;
 
+    canvas.addEventListener('touchstart', () => {
+        isTouchDown = true;
+    });
+
+    canvas.addEventListener('touchend', () => {
+        isTouchDown = false;
+    });
+
+    canvas.addEventListener('touchmove', (event) => {
+        if (isTouchDown) {
+            const touch = event.touches[0];
+            updateLightPosition(light, (touch.clientX - window.innerWidth / 2) / 100, - (touch.clientY - window.innerHeight / 2) / 100);
+        }
+    });
 
     startAnimation(camera, renderer, scene);
 
