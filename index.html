@@ -8,23 +8,29 @@
     html,body,#app { height: 100%; margin: 0; }
     canvas { display: block; }
   </style>
-  <script type="module" crossorigin src="./assets/index-mI8H7S7j.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-CsgzrzaO.css">
+  <script type="module" crossorigin src="./assets/index-BdIFUMKP.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CBoJQ2jU.css">
 </head>
 <body>
   <div id="app"></div>
 
   <div id="ui-panel">
-    <button id="ui-toggle" class="bevel">|||</button>
+    <button id="ui-toggle" class="bevel">x</button>
     <div id="ui-content" class="bevel-container">
 
       <div id="rotation-readout">rot: —</div>
     
-      <select id="internal-resolution">
-        <option value="snes">SNES</option>
-        <option value="ps1">PS1</option>
-        <option value="hd">HD</option>
-      </select>
+      <div id="resolution" style="display: flex;">
+        <input
+          type="range"
+          id="resolution-slider"
+          min="100"
+          max="1000"
+          step="1"
+          value="1000"
+        />
+        <span id="resolution-value">Resolution: 1000</span>
+      </div>
 
       <select id="object-model">
         <option value="chop">chop</option>
