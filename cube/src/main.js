@@ -185,13 +185,23 @@ function initModelRotationControl(scene, renderer) {
     });
 
     let isTouchDown = false;
-    canvas.addEventListener('touchstart', () => { isTouchDown = true; });
+    let lastTouchX = 0, lastTouchY = 0;
+    canvas.addEventListener('touchstart', (event) => {
+        isTouchDown = true;
+        const t = event.touches[0];
+        lastTouchX = t.clientX;
+        lastTouchY = t.clientY;
+    });
     canvas.addEventListener('touchend', () => { isTouchDown = false; });
     canvas.addEventListener('touchmove', async (event) => {
         if (isTouchDown && getSelectedLightModelMode().isModelMode) {
-            const touch = event.touches[0];
+            const t = event.touches[0];
+            const dx = t.clientX - lastTouchX;
+            const dy = t.clientY - lastTouchY;
+            lastTouchX = t.clientX;
+            lastTouchY = t.clientY;
             const model = getCurrentModel(scene);
-            await rotateObect(model, touch.movementX, touch.movementY);
+            await rotateObect(model, dx, dy);
         }
     });
 }
