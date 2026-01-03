@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { ZOOM } from '../params.js';
+export const DEFAULT_ZOOM = 1.5;
 
 export function createCamera() {
     const aspect = window.innerWidth / window.innerHeight;

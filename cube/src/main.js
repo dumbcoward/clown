@@ -1,7 +1,7 @@
 import { createScene, updateObject } from './3d/scene.js';
 import { scaleCanvasToWindow } from './3d/utilities.js';
 import { startAnimation } from './3d/animation.js';
-import { updateZoom, updateCameraForAspect } from './3d/camera.js';
+import { DEFAULT_ZOOM, updateZoom, updateCameraForAspect } from './3d/camera.js';
 import { updateLightColor, updateLightIntensity, updateLightPosition } from './3d/lighting.js';
 import { invertColor } from './3d/utilities.js';
 import { setLowResViewport, DEFAULT_BASE_HEIGHT } from './3d/renderer.js';
@@ -77,7 +77,9 @@ function clamp(val, min, max) {
 
 
     const zoomSlider = document.getElementById('zoom-slider');
+    zoomSlider.value = DEFAULT_ZOOM;
     const zoomValue = document.getElementById('zoom-value');
+    zoomValue.textContent = 'Zoom: ' + DEFAULT_ZOOM.toFixed(1);
     zoomSlider.addEventListener('input', function() {
         zoomValue.textContent = 'Zoom: ' + (Math.round(zoomSlider.value * 10) / 10).toFixed(1);
         //const a = zoomSlider.max - zoomSlider.min / zoomSlider.min - zoomSlider.max;
