@@ -5,17 +5,28 @@ import { DEFAULT_ZOOM, updateZoom, updateCameraForAspect } from './3d/camera.js'
 import { updateLightColor, updateLightIntensity, updateLightPosition } from './3d/lighting.js';
 import { invertColor } from './3d/utilities.js';
 import { setLowResViewport, DEFAULT_BASE_HEIGHT } from './3d/renderer.js';
-
-function clamp(val, min, max) {
-    return Math.min(Math.max(val, min), max);
-}
+import { rotateObect } from './3d/objects.js';
 
 (async () => {
     
     // initalize scene, camera, renderer, light
     const { scene, camera, renderer, light } = await createScene();
 
-    // 3d internal resolution
+    initZoomControl(camera);
+    initResolutionControl(renderer, camera);
+    initUiControl();
+    initModelSelector(scene);
+    initBrightnessControl(light);
+    initColorPicker(light);
+    initLightModelRadios();
+    initLightPositionInput(renderer, light);
+    initModelRotationControl(scene, renderer);
+
+    startAnimation(camera, renderer, scene);
+
+})();
+
+function initResolutionControl(renderer, camera) {
     const resolutionSlider = document.getElementById('resolution-slider');
     const resolutionValue = document.getElementById('resolution-value');
     resolutionSlider.value = DEFAULT_BASE_HEIGHT;
@@ -34,26 +45,29 @@ function clamp(val, min, max) {
 
     applyViewport();
     window.addEventListener('resize', applyViewport);
+}
 
+function initUiControl() {
     const uiToggle = document.getElementById('ui-toggle');
     const uiContent = document.getElementById('ui-content');
     uiToggle.addEventListener('click', () => {
-        console.log('toggling UI');
         uiContent.classList.toggle('collapsed');
         uiToggle.textContent = uiContent.classList.contains('collapsed') ? 'o' : 'x';
     });
+}
 
+function getCurrentModel(scene) {
+    const existingObject = scene.children.find(child => child.isMesh || child.isGroup);
+    return existingObject;
+}
 
-    
-    
-
+function initModelSelector(scene) {
     const dropdownModel = document.getElementById('object-model');
     dropdownModel.addEventListener('change', async (event) => {
         console.log('model changed:', event.target.value);
         await updateObject(scene, event.target.value);
 
-        const existingObject = scene.children.find(child => child.isMesh || child.isGroup);
-        console.log('New object in scene:', typeof existingObject);
+        const existingObject = getCurrentModel(scene);
 
         // Output the texture size of the loaded object
         if (existingObject && existingObject.material && existingObject.material.map && existingObject.material.map.image) {
@@ -71,11 +85,9 @@ function clamp(val, min, max) {
             console.log('No texture found on the loaded object.');
         }
     });
+}
 
-
-
-
-
+function initZoomControl(camera) {
     const zoomSlider = document.getElementById('zoom-slider');
     zoomSlider.value = DEFAULT_ZOOM;
     const zoomValue = document.getElementById('zoom-value');
@@ -88,16 +100,18 @@ function clamp(val, min, max) {
         updateZoom(camera, zoomSlider.value);
         
     });
+}
 
-
+function initBrightnessControl(light) {
     const lightSlider = document.getElementById('light-slider');
     const lightValue = document.getElementById('light-value');
-
     lightSlider.addEventListener('input', function() {
         lightValue.textContent = 'Brightness: ' + (Math.round(lightSlider.value * 100) / 100).toFixed(1);
         updateLightIntensity(light, parseFloat(lightSlider.value));
     });
+}
 
+function initColorPicker(light) {
     const colorPicker = document.getElementById('color-picker');
     colorPicker.addEventListener('input', function() {
         updateLightColor(light, colorPicker.value);
@@ -105,51 +119,79 @@ function clamp(val, min, max) {
         document.documentElement.style.setProperty('--color-art', colorPicker.value);
         document.documentElement.style.setProperty('--color-bg-primary', invertedColor);
     });
+}
 
+function initLightModelRadios() {
+    const lightModeRadios = document.querySelectorAll('input[name="light-model-mode"]');
+    lightModeRadios.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            console.log('Selected mode:', e.target.value);
+        });
+    });
+}
+
+function getSelectedLightModelMode() {
+    const lightRadio = document.querySelector('input[name="light-model-mode"][value="light"]');
+    const modelRadio = document.querySelector('input[name="light-model-mode"][value="model"]');
+    return { isLightMode: lightRadio.checked, isModelMode: modelRadio.checked };
+}
+
+function initLightPositionInput(renderer, light) {
+    function normalizeCoordinates(x, y) {
+        const normalizedX = (x - window.innerWidth / 2) / (window.innerWidth / 2) * 50;
+        const normalizedY = - (y - window.innerHeight / 2) / (window.innerHeight / 2) * 50;
+        return { x: normalizedX, y: normalizedY };
+    }
+    
     const canvas = renderer.domElement;
     canvas.addEventListener('click', (event) => {
-        updateLightPosition(light, (event.clientX - window.innerWidth / 2) / 100, - (event.clientY - window.innerHeight / 2) / 100);
+        if (!getSelectedLightModelMode().isLightMode) return; // Only proceed if "light" mode is selected
+        const {x, y} = normalizeCoordinates(event.clientX, event.clientY);
+        updateLightPosition(light, x, y);
     });
+
     let isMouseDown = false;
-
-    canvas.addEventListener('mousedown', () => {
-        isMouseDown = true;
-    });
-
-    canvas.addEventListener('mouseup', () => {
-        isMouseDown = false;
-    });
-
+    canvas.addEventListener('mousedown', () => { isMouseDown = true; });
+    canvas.addEventListener('mouseup', () => { isMouseDown = false; });
     canvas.addEventListener('mousemove', (event) => {
-        if (isMouseDown) {
-            updateLightPosition(light, (event.clientX - window.innerWidth / 2) / 100, - (event.clientY - window.innerHeight / 2) / 100);
+        if (isMouseDown && getSelectedLightModelMode().isLightMode) {
+            const {x, y} = normalizeCoordinates(event.clientX, event.clientY);
+            updateLightPosition(light, x, y);
         }
     });
 
     let isTouchDown = false;
-
-    canvas.addEventListener('touchstart', () => {
-        isTouchDown = true;
-    });
-
-    canvas.addEventListener('touchend', () => {
-        isTouchDown = false;
-    });
-
+    canvas.addEventListener('touchstart', () => { isTouchDown = true; });
+    canvas.addEventListener('touchend', () => { isTouchDown = false; });
     canvas.addEventListener('touchmove', (event) => {
-        if (isTouchDown) {
+        if (isTouchDown  && getSelectedLightModelMode().isLightMode) {
             const touch = event.touches[0];
-            updateLightPosition(light, (touch.clientX - window.innerWidth / 2) / 100, - (touch.clientY - window.innerHeight / 2) / 100);
+            const {x, y} = normalizeCoordinates(touch.clientX, touch.clientY);
+            updateLightPosition(light, x, y);
+        }
+    });
+}
+
+function initModelRotationControl(scene, renderer) {
+    const canvas = renderer.domElement;
+    let isMouseDown = false;
+    canvas.addEventListener('mousedown', () => { isMouseDown = true; });
+    canvas.addEventListener('mouseup', () => { isMouseDown = false; });
+    canvas.addEventListener('mousemove', async (event) => {
+        if (isMouseDown && getSelectedLightModelMode().isModelMode) {
+            const model = getCurrentModel(scene);
+            await rotateObect(model, event.movementX, event.movementY);
         }
     });
 
-    startAnimation(camera, renderer, scene);
-
-})();
-
-
-
-
-
-
-
+    let isTouchDown = false;
+    canvas.addEventListener('touchstart', () => { isTouchDown = true; });
+    canvas.addEventListener('touchend', () => { isTouchDown = false; });
+    canvas.addEventListener('touchmove', async (event) => {
+        if (isTouchDown && getSelectedLightModelMode().isModelMode) {
+            const touch = event.touches[0];
+            const model = getCurrentModel(scene);
+            await rotateObect(model, touch.movementX, touch.movementY);
+        }
+    });
+}

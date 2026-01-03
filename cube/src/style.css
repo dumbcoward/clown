@@ -14,7 +14,12 @@
 }
 
 /* Base Styles */
-html, body {
+html,
+body,
+button,
+input,
+select,
+textarea {
     margin: 0;
     padding: 0;
     overflow: hidden;
@@ -24,7 +29,7 @@ html, body {
     background-position: center;
     color: var(--color-text);
     font-family: monospace;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 *:focus {
@@ -60,6 +65,7 @@ canvas {
     display: flex;
     flex-direction: column;
     gap: 5px;
+    padding: 4px;
     max-width: 400px;
     max-height: 300px;;
     overflow: hidden;
@@ -72,24 +78,21 @@ canvas {
 }
 
 /* UI Controls */
-
-
-#zoom,
-#light {
-    gap: 5px;
-}
-
 #ui-toggle {
     cursor: pointer;
     border: none;
     color: var(--color-text);
 }
 
-#internal-resolution,
-#object-model {
-    border: none;
-    appearance: none;
-    cursor: pointer;
+#resolution,
+#zoom,
+#light {
+    gap: 5px;
+}
+
+#light-rotation {
+    display: flex;
+    justify-content: space-between;
 }
 
 /* Sliders */
@@ -102,10 +105,17 @@ input[type="range"] {
     accent-color: rgb(255, 255, 255);
 }
 
+#internal-resolution,
+#object-model {
+    border: none;
+    appearance: none;
+    cursor: pointer;
+}
+
 #color-picker {
     border: none;
     cursor: pointer;
-    width: 25%;
+    width: 100%;
     height: 3vh;
 }
 
@@ -130,8 +140,6 @@ select option {
     padding: 6px 12px;
     background: var(--color-bg-dark);
     color: var(--color-text);
-    font-family: monospace;
-    font-size: 10px;
     border-radius: 16px;
     box-shadow: var(--bevel-shadow);
     border-radius: var(--bevel-radius);
@@ -139,11 +147,9 @@ select option {
 
 /* Apply bevel to all children of bevel-container */
 .bevel-container > * {
-    padding: 6px 12px;
+    padding: 8px 16px;
     background: var(--color-bg-dark);
     color: var(--color-text);
-    font-family: monospace;
-    font-size: 10px;
     border-radius: 16px;
     box-shadow: var(--bevel-shadow);
     border-radius: var(--bevel-radius);

@@ -1,15 +1,14 @@
 import * as THREE from 'three';
-import { ZOOM } from '../params.js';
 export const DEFAULT_ZOOM = 1.5;
 
 export function createCamera() {
     const aspect = window.innerWidth / window.innerHeight;
 
     const camera = new THREE.OrthographicCamera(
-        -aspect * ZOOM,
-        aspect * ZOOM,
-        ZOOM,
-        -ZOOM,
+        -aspect * DEFAULT_ZOOM,
+        aspect * DEFAULT_ZOOM,
+        DEFAULT_ZOOM,
+        -DEFAULT_ZOOM,
         0.5,
         1000
     );
@@ -25,7 +24,7 @@ function getZoomFromSlider() {
     if (slider) {
         return parseFloat(slider.value);
     }
-    return ZOOM;
+    return DEFAULT_ZOOM;
 }
 
 export function updateCameraForAspect(camera, aspect) {

@@ -6,8 +6,6 @@ export function animate(camera, renderer, scene) {
     const existingObject = scene.children.find(child => child.isMesh || child.isGroup);
     
     if (!existingObject) return;
-    
-    existingObject.rotation.y += ROTATION_SPEED;
 
     const rotEl = document.getElementById('rotation-readout');
     if (rotEl) {

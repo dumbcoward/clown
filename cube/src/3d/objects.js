@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { CUBE_COLOR } from '../params.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-
+const ROTATION_SPEED = 0.005;
 
 export function createCube() {
     const geometry = new THREE.BoxGeometry();
@@ -112,3 +112,7 @@ export async function loadGLB(url, { scale = 1, center = true, castShadow = fals
     return group;
 }
 
+export async function rotateObect(obj, deltaX, deltaY) {
+    obj.rotation.y += deltaX * ROTATION_SPEED;
+    obj.rotation.x += deltaY * ROTATION_SPEED;
+}

@@ -8,7 +8,6 @@ export function createLight() {
         LIGHT_POSITION.y,
         LIGHT_POSITION.z
     );
-    
     return light;
 }
 

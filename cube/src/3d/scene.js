@@ -4,13 +4,14 @@ import { createRenderer } from './renderer.js';
 import { createLight } from './lighting.js';
 import { loadGLB } from './objects.js';
 
-// If you add `john.glb` to `src/assets/john.glb`, Vite will bundle it and
+// If you add `x.glb` to `src/assets/x.glb`, Vite will bundle it and
 // provide a correct URL for production. Import it with `?url` so we get a
 // runtime URL that respects the configured `base`.
 import chopUrl from '../assets/chop.glb?url';
 import doomscrollUrl from '../assets/doomscroll.glb?url';
 import mokaUrl from '../assets/moka.glb?url';
 import parryUrl from '../assets/parry.glb?url';
+import pepsiUrl from '../assets/pepsi.glb?url';
 import totemUrl from '../assets/totem.glb?url';
 
 export async function createScene() {
@@ -47,6 +48,9 @@ export async function updateObject(scene, type) {
         break;
     case 'parry':
         url = parryUrl;
+        break;
+    case 'pepsi':
+        url = pepsiUrl;
         break;
     case 'totem':
         url = totemUrl;

@@ -15,10 +15,7 @@
   <div id="ui-panel">
     <button id="ui-toggle" class="bevel">x</button>
     <div id="ui-content" class="bevel-container">
-
-      <div id="rotation-readout">rot: —</div>
-    
-      <div id="resolution" style="display: flex;">
+      <div id="resolution">
         <input
           type="range"
           id="resolution-slider"
@@ -35,10 +32,11 @@
         <option value="doomscroll">doomscroll</option>
         <option value="moka">moka</option>
         <option value="parry">parry</option>
+        <option value="pepsi">pepsi</option>
         <option value="totem">totem</option>
       </select>
       
-      <div id="zoom" style="display: flex;">
+      <div id="zoom">
         <input
           type="range"
           id="zoom-slider"
@@ -50,7 +48,7 @@
         <span id="zoom-value">Scale: 1</span>
       </div>
 
-      <div id="light" style="display: flex;">
+      <div id="light">
         <input
           type="range"
           id="light-slider"
@@ -61,10 +59,18 @@
         />
         <span id="light-value">Intensity: 1.0</span>
       </div>
-      <input type="color" id="color-picker"/>
-      <div id="info">
-        shamone
+
+      <div id="light-rotation">
+        <label>
+          <input type="radio" name="light-model-mode" value="light" checked />
+          Light
+        </label>
+        <label>
+          <input type="radio" name="light-model-mode" value="model" />
+          Model
+        </label>
       </div>
+      <input type="color" id="color-picker"/>
     </div>
     
   </div>
