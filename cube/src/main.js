@@ -38,9 +38,7 @@ function clamp(val, min, max) {
     const uiToggle = document.getElementById('ui-toggle');
     const uiContent = document.getElementById('ui-content');
     uiToggle.addEventListener('click', () => {
-        uiContent.classList.toggle('collapsed');
-        uiToggle.textContent = uiContent.classList.contains('collapsed') ? 'o' : 'x';
-
+        console.log('toggling UI');
         uiContent.classList.toggle('collapsed');
         uiToggle.textContent = uiContent.classList.contains('collapsed') ? 'o' : 'x';
     });
