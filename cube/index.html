@@ -13,16 +13,22 @@
   <div id="app"></div>
 
   <div id="ui-panel">
-    <button id="ui-toggle" class="bevel">|||</button>
+    <button id="ui-toggle" class="bevel">x</button>
     <div id="ui-content" class="bevel-container">
 
       <div id="rotation-readout">rot: —</div>
     
-      <select id="internal-resolution">
-        <option value="snes">SNES</option>
-        <option value="ps1">PS1</option>
-        <option value="hd">HD</option>
-      </select>
+      <div id="resolution" style="display: flex;">
+        <input
+          type="range"
+          id="resolution-slider"
+          min="100"
+          max="1000"
+          step="1"
+          value="1000"
+        />
+        <span id="resolution-value">Resolution: 1000</span>
+      </div>
 
       <select id="object-model">
         <option value="chop">chop</option>

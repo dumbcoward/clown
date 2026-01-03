@@ -19,3 +19,7 @@ export function updateLightColor(light, color) {
 export function updateLightIntensity(light, intensity) {
     light.intensity = intensity;
 }
+
+export function updateLightPosition(light, x, y) {
+    light.position.set(x, y, light.position.z);
+}
