@@ -47,6 +47,7 @@ canvas {
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     z-index: 1;
+    touch-action: none;
 }
 
 /* UI Panel */
@@ -82,6 +83,8 @@ canvas {
     cursor: pointer;
     border: none;
     color: var(--color-text);
+    font-size: xx-large;
+    background: transparent;
 }
 
 #resolution,
@@ -130,8 +133,8 @@ select option {
     width: 100vw;
     height: 100vh;
     background-color: var(--color-art);
-    -webkit-mask: url('./assets/goof.svg') center/contain no-repeat;
-    mask: url('./assets/goof.svg') center/contain no-repeat;
+    -webkit-mask: url('./assets/goof.svg') top/contain no-repeat;
+    mask: url('./assets/goof.svg') top/contain no-repeat;
     z-index: 0;
 }
 

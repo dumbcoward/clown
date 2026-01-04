@@ -52,7 +52,7 @@ function initUiControl() {
     const uiContent = document.getElementById('ui-content');
     uiToggle.addEventListener('click', () => {
         uiContent.classList.toggle('collapsed');
-        uiToggle.textContent = uiContent.classList.contains('collapsed') ? 'o' : 'x';
+        uiToggle.textContent = uiContent.classList.contains('collapsed') ? '😮' : '😐';
     });
 }
 
@@ -145,16 +145,16 @@ function initLightPositionInput(renderer, light) {
     
     const canvas = renderer.domElement;
     canvas.addEventListener('click', (event) => {
-        if (!getSelectedLightModelMode().isLightMode) return; // Only proceed if "light" mode is selected
+        if (!getSelectedLightModelMode().isLightMode && event.button === 0) return; // Only proceed if "light" mode is selected
         const {x, y} = normalizeCoordinates(event.clientX, event.clientY);
         updateLightPosition(light, x, y);
     });
 
     let isMouseDown = false;
-    canvas.addEventListener('mousedown', () => { isMouseDown = true; });
+    canvas.addEventListener('mousedown', (event) => { isMouseDown = event.button === 0; });
     canvas.addEventListener('mouseup', () => { isMouseDown = false; });
     canvas.addEventListener('mousemove', (event) => {
-        if (isMouseDown && getSelectedLightModelMode().isLightMode) {
+        if (isMouseDown && getSelectedLightModelMode().isLightMode && event.button === 0) {
             const {x, y} = normalizeCoordinates(event.clientX, event.clientY);
             updateLightPosition(light, x, y);
         }
@@ -175,10 +175,22 @@ function initLightPositionInput(renderer, light) {
 function initModelRotationControl(scene, renderer) {
     const canvas = renderer.domElement;
     let isMouseDown = false;
-    canvas.addEventListener('mousedown', () => { isMouseDown = true; });
-    canvas.addEventListener('mouseup', () => { isMouseDown = false; });
+    let isWheelDown = false;
+    canvas.addEventListener('mousedown', (e) => {
+        if (e.button === 0) isMouseDown = true;
+        if (e.button === 1) isWheelDown = true;
+    });
+    canvas.addEventListener('mouseup', (e) => {
+        if (e.button === 0) isMouseDown = false;
+        if (e.button === 1) isWheelDown = false;
+    });
+    canvas.addEventListener('mouseleave', () => {
+        isMouseDown = false;
+        isWheelDown = false;
+    });
+
     canvas.addEventListener('mousemove', async (event) => {
-        if (isMouseDown && getSelectedLightModelMode().isModelMode) {
+        if ((getSelectedLightModelMode().isModelMode && isMouseDown) || isWheelDown) {
             const model = getCurrentModel(scene);
             await rotateObect(model, event.movementX, event.movementY);
         }
@@ -187,20 +199,51 @@ function initModelRotationControl(scene, renderer) {
     let isTouchDown = false;
     let lastTouchX = 0, lastTouchY = 0;
     canvas.addEventListener('touchstart', (event) => {
+        event.preventDefault();
         isTouchDown = true;
-        const t = event.touches[0];
-        lastTouchX = t.clientX;
-        lastTouchY = t.clientY;
+        switch (event.touches.length) {
+            case 1:
+                // single touch
+                lastTouchX = event.touches[0].clientX;
+                lastTouchY = event.touches[0].clientY;
+                break;
+            case 2:
+                // two-finger touch
+                lastTouchX = (event.touches[0].clientX + event.touches[1].clientX) / 2;
+                lastTouchY = (event.touches[0].clientY + event.touches[1].clientY) / 2;
+                break;
+        }
     });
-    canvas.addEventListener('touchend', () => { isTouchDown = false; });
+    canvas.addEventListener(
+        'touchend',            // event type
+        () => { isTouchDown = false; }, // handler (arrow function)
+        { passive: false }     // options object
+    );
     canvas.addEventListener('touchmove', async (event) => {
-        if (isTouchDown && getSelectedLightModelMode().isModelMode) {
-            const t = event.touches[0];
-            const dx = t.clientX - lastTouchX;
-            const dy = t.clientY - lastTouchY;
-            lastTouchX = t.clientX;
-            lastTouchY = t.clientY;
-            const model = getCurrentModel(scene);
+        event.preventDefault();
+        let dx = 0, dy = 0;
+        switch (event.touches.length) {
+            case 1:
+                // single touch
+                dx = event.touches[0].clientX - lastTouchX;
+                dy = event.touches[0].clientY - lastTouchY;
+                lastTouchX = event.touches[0].clientX;
+                lastTouchY = event.touches[0].clientY;
+                break;
+            case 2:
+                // two-finger touch
+                const currentTouchX = (event.touches[0].clientX + event.touches[1].clientX) / 2;
+                const currentTouchY = (event.touches[0].clientY + event.touches[1].clientY) / 2;
+                dx = currentTouchX - lastTouchX;
+                dy = currentTouchY - lastTouchY;
+                lastTouchX = currentTouchX;
+                lastTouchY = currentTouchY;
+                break;
+        }
+        
+        const model = getCurrentModel(scene);
+
+        if (isTouchDown && ((getSelectedLightModelMode().isModelMode && event.touches.length == 1))) {
             await rotateObect(model, dx, dy);
         }
     });
