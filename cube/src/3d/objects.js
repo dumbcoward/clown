@@ -93,6 +93,22 @@ export async function loadGLB(url, { scale = 1, center = true, castShadow = fals
     // Optional: shadow flags
     root.traverse((o) => {
         if (o.isMesh) {
+            // Resize texture to power-of-two for better performance and compatibility with iOS safari
+            const texture = o.material.map;
+            const w = nearestPowerOfTwo(texture.image.width);
+            const h = nearestPowerOfTwo(texture.image.height);
+            
+            // Create canvas and resize image
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(texture.image, 0, 0, w, h);
+            
+            // Replace texture
+            texture.image = canvas;
+            texture.needsUpdate = true;
+
             o.castShadow = castShadow;
             o.receiveShadow = castShadow;
         }
@@ -110,6 +126,10 @@ export async function loadGLB(url, { scale = 1, center = true, castShadow = fals
     }
 
     return group;
+}
+
+function nearestPowerOfTwo(n) {
+    return Math.pow(2, Math.ceil(Math.log2(n)));
 }
 
 export async function rotateObect(obj, deltaX, deltaY) {

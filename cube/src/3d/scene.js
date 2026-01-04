@@ -18,7 +18,7 @@ export async function createScene() {
     const scene = new THREE.Scene();
     const camera = createCamera();
     const renderer = createRenderer();
-    const object = await loadGLB(chopUrl, { scale: 1.5, center: true, castShadow: true });
+    const object = await loadGLB(pepsiUrl, { scale: 1.5, center: true, castShadow: true });
     const light = createLight();
     scene.add(object);
     scene.add(light);
