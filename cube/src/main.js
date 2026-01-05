@@ -66,16 +66,58 @@ function initUiControl() {
     });
 }
 
+function disposeObject(object) {
+    if (!object) return;
+    
+    object.traverse(child => {
+        if (child.geometry) {
+            child.geometry.dispose();
+        }
+        if (child.material) {
+            if (Array.isArray(child.material)) {
+                child.material.forEach(mat => mat.dispose());
+            } else {
+                child.material.dispose();
+            }
+        }
+        if (child.texture) {
+            child.texture.dispose();
+        }
+    });
+}
+
 function getCurrentModel(scene) {
     const existingObject = scene.children.find(child => child.isMesh || child.isGroup);
     return existingObject;
+}
+
+function logMemoryUsage(label) {
+    if (performance.memory) {
+        const used = (performance.memory.usedJSHeapSize / 1048576).toFixed(2);
+        const total = (performance.memory.totalJSHeapSize / 1048576).toFixed(2);
+        console.log(`${label} - Memory: ${used}MB / ${total}MB`);
+    }
 }
 
 function initModelSelector(scene) {
     const dropdownModel = document.getElementById('object-model');
     dropdownModel.addEventListener('change', async (event) => {
         console.log('model changed:', event.target.value);
+        logMemoryUsage('Before disposal');
+        
+        // Dispose of the old model before loading a new one
+        const oldModel = getCurrentModel(scene);
+        if (oldModel) {
+            scene.remove(oldModel);
+            disposeObject(oldModel);
+            console.log('Old model disposed');
+        }
+        
+        logMemoryUsage('After disposal');
+
         await updateObject(scene, event.target.value);
+        
+        logMemoryUsage('After loading new model');
 
         const existingObject = getCurrentModel(scene);
 
