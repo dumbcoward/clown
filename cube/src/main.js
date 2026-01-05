@@ -62,7 +62,7 @@ function initUiControl() {
     const uiContent = document.getElementById('ui-content');
     uiToggle.addEventListener('click', () => {
         uiContent.classList.toggle('collapsed');
-        uiToggle.textContent = uiContent.classList.contains('collapsed') ? '😮' : '😐';
+        uiToggle.textContent = uiContent.classList.contains('collapsed') ? '😐' : '😮';
     });
 }
 

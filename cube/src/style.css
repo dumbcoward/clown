@@ -190,7 +190,7 @@ select option {
 
 .audio-bar .bar {
     width: 10px;
-    background: linear-gradient(180deg, var(--color-bg-primary), var(--color-art));
+    background: linear-gradient(180deg, transparent, var(--color-art));
     border-radius: 6px;
     transition: height 60ms linear;
 }
