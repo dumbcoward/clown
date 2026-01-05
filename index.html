@@ -2,21 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Cube</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>ass</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
   <style>
     html,body,#app { height: 100%; margin: 0; }
     canvas { display: block; }
   </style>
-  <script type="module" crossorigin src="./assets/index-DyqB1H7L.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-BPrmZLXa.css">
+  <script type="module" crossorigin src="./assets/index-DcxpSbqR.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-Dplmw-WJ.css">
 </head>
 <body>
   <div id="app"></div>
 
+  <div id="audio-readout" class="audio-bars"></div>
+  
   <div id="ui-panel">
-    <button id="ui-toggle">😐</button>
+    <div id="ui-header">
+      <button id="ui-toggle">😐</button>
+      <button id="audio-toggle">▶️</button>
+    </div>
     <div id="ui-content" class="bevel-container">
+      
       <div id="resolution">
         <input
           type="range"
@@ -73,10 +80,11 @@
         </label>
       </div>
       <input type="color" id="color-picker"/>
+      
     </div>
     
   </div>
-
+  
   <!-- anywhere in body -->
   <div class="vector-art" aria-hidden="true"></div>
 </body>
