@@ -29,7 +29,7 @@ textarea {
     background-position: center;
     color: var(--color-text);
     font-family: monospace;
-    font-size: 14px;
+    font-size: clamp(12px, 2vw, 14px); /* Scales responsively */
 }
 
 *:focus {
@@ -62,15 +62,32 @@ canvas {
     z-index: 9999;
 }
 
+#ui-header {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
 #ui-content {
     display: flex;
     flex-direction: column;
     gap: 5px;
     padding: 4px;
-    max-width: 400px;
+    max-width: 600px;
     max-height: 300px;;
     overflow: hidden;
     transition: max-width 0.3s ease, max-height 0.3s ease;
+}
+
+#ui-content > * {
+    padding: 8px 16px;
+    background: var(--color-bg-dark);
+    color: var(--color-text);
+    border-radius: 16px;
+    box-shadow: var(--bevel-shadow);
+    border-radius: var(--bevel-radius);
+    display: flex;
+    align-items: center;
 }
 
 #ui-content.collapsed {
@@ -79,7 +96,8 @@ canvas {
 }
 
 /* UI Controls */
-#ui-toggle {
+#ui-toggle,
+#audio-toggle {
     cursor: pointer;
     border: none;
     color: var(--color-text);
@@ -133,8 +151,8 @@ select option {
     width: 100vw;
     height: 100vh;
     background-color: var(--color-art);
-    -webkit-mask: url('./assets/goof.svg') top/contain no-repeat;
-    mask: url('./assets/goof.svg') top/contain no-repeat;
+    -webkit-mask: url('./assets/romagirl.svg') top/contain no-repeat;
+    mask: url('./assets/romagirl.svg') top/contain no-repeat;
     z-index: 0;
 }
 
@@ -148,13 +166,35 @@ select option {
     border-radius: var(--bevel-radius);
 }
 
-/* Apply bevel to all children of bevel-container */
-.bevel-container > * {
-    padding: 8px 16px;
-    background: var(--color-bg-dark);
-    color: var(--color-text);
-    border-radius: 16px;
-    box-shadow: var(--bevel-shadow);
-    border-radius: var(--bevel-radius);
+#audio-readout.audio-bars {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    z-index: 9998;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+    padding: 8px 0;
+    height: 200px;
+    align-content: flex-start; /* Align bars to top */
+}
+
+.audio-bar {
+    display: flex;
+    flex-direction: column; /* Bars grow downward */
     align-items: center;
+    gap: 4px;
+    color: var(--color-text);
+    font-size: 12px;
+}
+
+.audio-bar .bar {
+    width: 10px;
+    background: linear-gradient(180deg, var(--color-bg-primary), var(--color-art));
+    border-radius: 6px;
+    transition: height 60ms linear;
+}
+
+.audio-bar .value {
+    font-family: monospace;
 }

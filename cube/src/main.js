@@ -1,14 +1,22 @@
 import { createScene, updateObject } from './3d/scene.js';
 import { scaleCanvasToWindow } from './3d/utilities.js';
-import { startAnimation } from './3d/animation.js';
+import { startAnimation, initAudio, analyser, dataArray, audioContext, audioElement, getDetailedAudioData } from './3d/animation.js';
 import { DEFAULT_ZOOM, updateZoom, updateCameraForAspect } from './3d/camera.js';
 import { updateLightColor, updateLightIntensity, updateLightPosition } from './3d/lighting.js';
 import { invertColor } from './3d/utilities.js';
 import { setLowResViewport, DEFAULT_BASE_HEIGHT } from './3d/renderer.js';
 import { rotateObect } from './3d/objects.js';
 
+
 (async () => {
-    
+    const audio = new Audio('assets/windowlicker.m4a');
+    const audioContext = new AudioContext();
+    const source = audioContext.createMediaElementSource(audio);
+
+
+    console.log('Sample Rate:', audioContext.sampleRate);
+    console.log('Duration:', audio.duration);
+
     // initalize scene, camera, renderer, light
     const { scene, camera, renderer, light } = await createScene();
 
@@ -21,6 +29,8 @@ import { rotateObect } from './3d/objects.js';
     initLightModelRadios();
     initLightPositionInput(renderer, light);
     initModelRotationControl(scene, renderer);
+    await initAudio();
+    initAudioControl(scene);
 
     startAnimation(camera, renderer, scene);
 
@@ -247,4 +257,92 @@ function initModelRotationControl(scene, renderer) {
             await rotateObect(model, dx, dy);
         }
     });
+}
+
+function initAudioControl() {
+    function getBandData() {
+        if (!analyser || !dataArray) return;
+        analyser.getByteFrequencyData(dataArray);
+        
+        // Calculate different frequency bands
+        const low = dataArray.slice(0, dataArray.length / 3).reduce((a, b) => a + b) / (dataArray.length / 3);
+        const mid = dataArray.slice(dataArray.length / 3, (dataArray.length * 2) / 3).reduce((a, b) => a + b) / (dataArray.length / 3);
+        const high = dataArray.slice((dataArray.length * 2) / 3).reduce((a, b) => a + b) / (dataArray.length / 3);
+        const average = dataArray.reduce((a, b) => a + b) / dataArray.length;
+
+        return { low, mid, high, average };
+    }
+
+    function updateAudioReadout() {
+        if (!analyser || !dataArray) return;
+
+        const { bands, average } = getDetailedAudioData();
+
+        // Update readout display
+        const readout = document.getElementById('audio-readout');
+        if (readout) {
+            const bandValues = bands.map((b, i) => `${i}: ${Math.round(b)}`).join(' | ');
+            readout.textContent = `${bandValues} | Avg: ${Math.round(average)}`;
+        }
+    }
+
+    function toggleAudio() {
+        if (!audioContext) {
+            initAudio();
+        }
+        
+        if (audioElement.paused) {
+            audioContext.resume();
+            audioElement.play();
+            return true;
+        } else {
+            audioElement.pause();
+            return false;
+        }
+    }
+
+    const audioButton = document.getElementById('audio-toggle');
+    audioButton.addEventListener('click', async () => {
+        if (!audioContext) {
+            initAudio();
+        }
+        const isPlaying = await toggleAudio();
+        audioButton.textContent = isPlaying ? '⏸️' : '▶️';
+    });
+
+    function renderAudioBars(bands) {
+        const container = document.getElementById('audio-readout');
+        if (!container) return;
+        if (!container.hasChildNodes()) {
+            // create bar elements once
+            for (let i = 0; i < 8; i++) {
+                const wrap = document.createElement('div');
+                wrap.className = 'audio-bar';
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                const val = document.createElement('div');
+                val.className = 'value';
+                wrap.appendChild(bar);
+                wrap.appendChild(val);
+                container.appendChild(wrap);
+            }
+        }
+        const bars = container.querySelectorAll('.audio-bar');
+        bands.forEach((b, i) => {
+            const barEl = bars[i].querySelector('.bar');
+            const valEl = bars[i].querySelector('.value');
+            const h = Math.max(2, Math.round(b * 1.5)); // 1.5x pixels
+            barEl.style.height = `${h}px`;
+            valEl.textContent = Math.round(b);
+        });
+    }
+
+    function updateAudioReadout() {
+        const data = getDetailedAudioData();
+        if (!data) return;
+        renderAudioBars(data.bands);
+    }
+
+    // call at ~60fps
+    setInterval(updateAudioReadout, 16);
 }

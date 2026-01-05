@@ -10,6 +10,7 @@ import { loadGLB } from './objects.js';
 import chopUrl from '../assets/chop.glb?url';
 import doomscrollUrl from '../assets/doomscroll.glb?url';
 import mokaUrl from '../assets/moka.glb?url';
+import monkeysUrl from '../assets/monkeys.glb?url';
 import parryUrl from '../assets/parry.glb?url';
 import pepsiUrl from '../assets/pepsi.glb?url';
 import totemUrl from '../assets/totem.glb?url';
@@ -18,7 +19,7 @@ export async function createScene() {
     const scene = new THREE.Scene();
     const camera = createCamera();
     const renderer = createRenderer();
-    const object = await loadGLB(pepsiUrl, { scale: 1.5, center: true, castShadow: true });
+    const object = await loadGLB(monkeysUrl, { scale: 1.5, center: true, castShadow: true });
     const light = createLight();
     scene.add(object);
     scene.add(light);
@@ -45,6 +46,9 @@ export async function updateObject(scene, type) {
         break;
     case 'moka':
         url = mokaUrl;
+        break;
+    case 'monkeys':
+        url = monkeysUrl;
         break;
     case 'parry':
         url = parryUrl;
